@@ -8,12 +8,14 @@ const SightingsGridView = function (container) {
 SightingsGridView.prototype.bindEvents = function () {
   PubSub.subscribe('Sightings:data-loaded', (evt) => {
     this.render(evt.detail);
+    console.log(evt.detail);
   });
 };
 
 SightingsGridView.prototype.render = function (sightings) {
   this.container.innerHTML = '';
   const sightingView = new SightingView(this.container);
+
   sightings.forEach((sighting) => sightingView.render(sighting));
 };
 

@@ -7,9 +7,20 @@ const Sightings = function (url) {
 };
 
 Sightings.prototype.bindEvents = function () {
-  PubSub.subscribe('SightingView:sighting-delete-clicked', (evt) => {
+    PubSub.subscribe('SightingView:sighting-delete-clicked', (evt) => {
     this.deleteSighting(evt.detail);
   });
+    PubSub.subscribe("SightingForm: sighting-submitted", (evt) => {
+      this.postSighting(evt.detail);
+    })
+};
+
+Sightings.prototype.postSighting = function (sighting) {
+  this.request.post(sighting)
+    .then((sighting) => {
+      PubSub.publish("Sightings:data-loaded", sighting);
+    })
+    .catch(console.error);
 };
 
 Sightings.prototype.getData = function () {
